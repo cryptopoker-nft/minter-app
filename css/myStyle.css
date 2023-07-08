@@ -1,0 +1,1005 @@
+/** Main Styles **/
+
+#main-container {
+  /* background: linear-gradient(black, white);
+  background: url('../img/cp_bg.png') no-repeat center center fixed; */
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+
+  max-width: 720px;   /* limit width until all viewports are tested **/
+
+
+  box-shadow: inset 0px 6px 8px 3px rgb(154 129 49 / 80%);
+
+}
+
+.login-label {
+  text-align:center; 
+  color: white;
+  font-weight: 200;
+  text-transform: uppercase;
+  font-size: 18px;
+}
+
+/* #main-column {
+  background: url(../img/bg-logo.png) center center no-repeat;
+} */
+
+html, body {
+  background: black;
+}
+
+.clear {
+  clear: both;
+}
+
+/** Typography **/
+
+/* #main-column h2, #main-column .title-head {
+  /* color: white;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.33); 
+} */
+
+#main-column h2.header-title {
+  text-align: center;
+  text-transform: uppercase;
+  margin-top: 10px;
+}
+
+.header-image img {
+  max-width: 90%;
+  margin: 25px 5% 0px;
+}
+
+.tagline-image {
+  max-width: 80%;
+  margin: 0px 10% 10px;
+}
+
+#contentArea {
+  color: white;
+}
+
+/* override */
+#contentArea .accordion {
+  color: black;
+  margin: 5px 5%;
+
+  padding-bottom: 30px;
+  border-radius: 8px;
+  background: url('../img/cp-v1-art/home-content-bg-dark.jpg');
+}
+
+#accordionDisplay .accordion-item {
+  border:none;
+}
+
+#accordionDisplay .accordion-body {
+  background: url('../img/cp-v1-art/home-content-bg-dark.jpg');
+  border-bottom: 2px solid white;
+
+  padding-bottom: 0.25rem;
+}
+
+#accordionDisplay h2 button {
+  text-transform: uppercase;
+  background: url('../img/cp-v1-art/home-content-bg.jpg');
+  border-bottom: 2px solid white;
+  color: black;
+  font-weight: 600;
+
+  text-align: center;
+} 
+
+/* this an override of the default arrow */
+.accordion-button:not(.collapsed)::after, .accordion-button::after {
+  background-image: url('../img/cp-v1-art/arrow-down.png');
+}
+
+.accordion .prizes {
+  
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+  /* border: solid 3px #D02128;
+  padding: 10px 15px;
+  border-radius: 5px; */
+  transition: all 0.6s linear;
+
+  background: rgba(245,245,245,0.8);
+
+  box-shadow: 3px 4px 3px 3px rgba(0,0,0,0.33);
+}
+
+.prize-title {
+  color: white;
+  background: black;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 200;
+  text-transform: uppercase;
+  padding: 6px 10px;
+  letter-spacing: 1px;
+
+  border: 8px solid rgba(255,255,255,0.2);
+  border-style: outset;
+
+  box-shadow: 2px 0 2px rgba(255,255,255,0.2);
+}
+
+.prize-title strong {
+  font-weight: 700;
+}
+
+.prize-copy-link {
+  text-align: center;
+  font-weight:600;
+  text-transform: uppercase;
+  font-size: 32px;
+  letter-spacing: -1px;
+
+  margin-bottom: -5px;
+}
+
+.prize-copy-link a {
+  text-decoration: none;
+}
+
+.prize-copy-link a, .prize-copy-extra {
+  color: rgb(153,135,75) !important;
+}
+
+.prize-copy-extra {
+  font-weight: 300;
+  font-size: 16px;
+  text-align: center;
+}
+
+.accordion .prizes:hover { border-width: 6px; border-radius: 10px; }
+
+#contentArea a {
+  color: rgba(229,128,58,1);
+}
+
+/* override */
+#contentArea a.btn {
+  color: white;
+  margin-right: 5px;
+}
+
+/** End typography **/
+
+
+#UIArea {
+  overflow: auto;
+  margin-bottom: 5px;
+}
+
+#UIArea w3m-core-button {
+  float: right;
+  display:none; /* hide until logged in as we don't need two on non-logged in page? */
+}
+
+#UIArea .btn {
+  float: right;
+}
+
+
+
+/* set the padding at the bottom to 100 px to allow for lower menu to be accessed
+OR:  add a background to lower menu such that the play area will slide behind the menu element -> padding still required */
+
+#contentArea {
+  clear: both;
+}
+
+#base-nav {
+  background: rgba(0,0,0,0.33);
+
+}
+
+.social-links {
+  list-style: none;
+}
+
+.social-links li {
+  float: right;
+  padding: 5px 10px;
+}
+
+.social-links li img {
+  width: 25px;
+}
+
+.social-links li.disabled {
+  display: none;
+}
+
+.badge-container {
+  list-style: none;
+}
+
+.badge-container li {
+  float: left;
+  margin: 5px 10px;
+}
+
+.badge-container li.badge {
+  padding: 4px 6px;
+  border: 1px solid black;
+  border-radius: 5px;
+  background: blue;
+  color: white;
+}
+
+.badge-container li.badge.free {
+  background: green;
+}
+
+
+/******** IFRAME OpenSea input **********/
+.fASRKM {
+  display: none;
+}
+
+.cb {
+  clear: both;
+}
+
+.nav-link {
+  text-transform: uppercase;
+  background: rgba(100,100,100,0.3);
+  padding: 0.25rem 0.75rem;
+}
+
+.nav-link.active {
+  font-weight: bold;
+  background: rgba(200,200,200,0.3);
+}
+
+
+
+.fixed-bottom {
+  bottom: 30px;
+  margin: 0 12%;
+}
+
+.fixed-bottom #base-nav {
+  background-color: rgb(65,53,21);
+  /* border: 8px solid blue;
+  border-style: inset; */
+
+  border: 5px solid rgba(255,255,255,0.2);
+  border-style: outset;
+
+  box-shadow: 2px 0 2px rgba(255,255,255,0.2);
+}
+
+.fixed-bottom #base-nav li a, .fixed-bottom #base-nav li.nav-sep {
+  color: white;
+}
+
+.fixed-bottom #base-nav li.nav-sep {
+  font-size: 20px;
+}
+
+.image-wide {
+  max-width: 450px;
+}
+
+.pull-right {
+
+  display: none;
+
+  cursor: pointer;
+
+  float: right;
+  margin-bottom: 0;
+  border-radius: 5px;
+
+  color: white;
+  font-size: 9px;
+  padding: 3px;
+  background: blue;
+  border-color: lightblue;
+
+  position: relative;
+  top: -25px;
+}
+
+.button-container {
+  margin: 0 -20px 10px -20px;
+  background: url('../img/cp-v1-art/button-container-bg.jpg');
+
+  /* border: 3px solid darkred;
+  border-radius: 20px; */
+  padding:  10px 20px;
+
+  text-align: center;
+}
+
+.center-button {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.title-head {
+  font-style: italic;
+  font-weight: bold;
+
+  text-align: center;
+  position: relative;
+  top: -27px;
+  margin-bottom: -20px;
+}
+
+.title-head small {
+  display: block;
+}
+
+/** header buttons **/
+
+#mintBtn, #connectedWallet {
+  width: auto;
+  transition: all 1s ease-in-out;
+}
+
+#mintBtn {
+  margin-left: 5px;
+}
+
+#mintBtn::after {
+content: "DEALR ";
+}
+#mintBtn:hover::after {
+ content: "DEALR!";
+ text-decoration: underline;
+}
+
+
+#connectedWallet {
+  margin-right: 3px;
+}
+
+#connectedWallet::after {
+  content:  "Wallet Connected";
+}
+
+#connectedWallet:hover::after {
+  content:  "Go to Dashboard";
+}
+
+#themes_badges {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+#themes_badges li {
+  float: left;
+  margin: 5px;
+  border: 3px solid black;
+  border-radius: 5px;
+
+  width: 47%;
+  height: 110px;
+
+  text-align: center;
+
+}
+
+#themes_badges li a {
+  text-transform: uppercase;
+  vertical-align: middle;
+  line-height: 50px;
+}
+
+/***** ANIMATIONS *****/
+
+.wallet-tx {
+  text-transform:  uppercase;
+  font-style: italic;
+  font-weight: 700;
+  text-align: center;
+  margin: 20px 5px;
+}
+
+.wallet-tx {
+    -webkit-animation: wallet-tx 3s ease-out;
+    -webkit-animation-iteration-count: infinite; 
+    animation: wallet-tx 3s ease-out;
+    animation-iteration-count: infinite; 
+    opacity: 0.5;
+}
+@-webkit-keyframes wallet-tx {
+    0% { 
+        opacity: 0.5;
+    }
+    50% { 
+        opacity: 1.0;
+    }
+    100% { 
+        opacity: 0.5;
+    }
+}
+
+@keyframes wallet-tx {
+  0% { 
+      opacity: 0.5;
+  }
+  50% { 
+      opacity: 1.0;
+  }
+  100% { 
+      opacity: 0.5;
+  }
+}
+
+/*.wallet-tx {
+    -webkit-animation: wallet-tx 3s ease-out;
+    -webkit-animation-iteration-count: infinite; 
+    opacity: 0.5;
+}
+@-webkit-keyframes wallet-tx {
+    0% { 
+        opacity: 0.5;
+    }
+    50% { 
+        opacity: 1.0;
+    }
+    100% { 
+        opacity: 0.5;
+    }
+}*/
+
+/** HOMEPAGE **/
+.gameHomeContainer {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.gameHomeContainer div.game-data {
+  overflow: auto;
+  border: 1px solid black;
+  border-radius: 20px;
+  margin: 10px 5px;
+  padding: 5px 10px;
+}
+
+/*.button-container .btn {
+  margin: 0 30%;
+}*/
+
+
+
+.hand {
+  border: 1px solid transparent;
+  border-bottom: 2px solid black;
+  border-radius: 10px;
+  padding: 5px 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  min-height: 160px;
+
+  transition: border-width 0.3s linear;
+}
+
+.hand a {
+  transition: all 0.3s linear;
+}
+
+.hand.slide-right {
+  /* position: relative;
+    right: 150px; */
+    border-right-width: 90px;
+    border-right-color: darkred;
+}
+
+.hand .showOnSlide, .hand .showOnSlideToo {
+  color: white;
+  font-weight: 600;
+  background: darkred;
+  position: relative;
+  left: 105%;
+
+  display: none;
+}
+
+.showOnSlide, .showOnSlideToo {
+  cursor: pointer;
+}
+
+.hand.slide-right .showOnSlide, .hand.slide-right .showOnSlideToo {
+  display: inline-block;
+}
+
+.hand img {
+  max-width: 60px;
+}
+
+.hand table {
+  width: 100%;
+  position: relative;
+  top: 0px;
+}
+
+.hand table td {
+  text-align: center;
+  width: 60px;
+}
+
+/* .nft-link {
+
+} */
+
+.nft-pen {
+    min-height: 390px;    /* on mobile */
+}
+
+#nft-img {
+  visibility: hidden;
+  opacity: 0;
+  animation: fadeIn 3s;
+  /* -webkit-animation: fadeIn 5s;
+  -moz-animation: fadeIn 5s;
+  -o-animation: fadeIn 5s;
+  -ms-animation: fadeIn 5s; */
+  min-height: 390px;
+}
+
+@keyframes fadeIn {
+  0% {opacity:0; scale: 0;}
+  100% {opacity:1; scale: 1;}
+}
+
+#nft-img.shown {
+  visibility: visible;
+  opacity: 1;
+}
+
+.cardDisplay {
+  opacity: 0;
+  visibility: hidden;
+  animation: fadeIn 3s;
+}
+
+.cardDisplay.shown {
+  opacity: 1;
+  visibility: visible;
+}
+
+/*********** CSS STYLE LIBRARIES IMPORTED ************/
+
+/* CUSTOM:  PAPER PLANE CSS ANIMATION */
+
+#plane-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.paperplane {
+  position: relative;
+  overflow: hidden;
+  width: 400px;
+  height: 400px;
+  background-color: #50befa;
+  border-radius:50%;
+}
+
+.plane {
+  position: absolute;
+  left:200px;
+  top:150px;
+  animation: move 3s linear infinite;
+}
+
+@keyframes move {
+  0% {transform: translateY(0) rotateX(0);}
+  25% {transform: translateY(-30px) rotateX(40deg);}
+  50% {transform: rotateX(0) translateY(0);}
+  75% {transform: rotateX(-40deg) translateY(30px);}
+  100% {transform: rotateX(0) translateY(0);}
+}
+
+.wingRight {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-left: 22.5px solid transparent;
+  border-right: 12.5px solid transparent;
+  border-bottom: 115px solid white;
+  transform: rotate(61deg); 
+  z-index:4;
+}
+
+.bottom {
+  position: relative;
+  width: 0;
+  height: 0;
+  border-left: 12.5px solid transparent;
+  border-right: 12.5px solid transparent;
+  border-bottom: 25.5px solid #676d70;
+  top: 71px;
+  transform: rotate(-5deg);
+  left:-52.5px;
+  z-index:3;
+}
+
+.top {
+  position:absolute;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 30px solid #c1c7c9;
+  top: 65px;
+  transform: rotate(5deg);
+  left:-60px;
+  z-index:1;
+}
+
+.middle {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-bottom: 135px solid #c1c7c9;
+  top: -13.5px;
+  transform: rotate(72deg);
+  left:-7.5px;
+  z-index:2;
+}
+
+.wingLeft {
+  position: absolute; 
+  width: 0;
+  height: 0;
+  border-left: 25px solid transparent;
+  border-bottom: 135px solid white;
+  transform: rotate(78deg) skewY(-35deg); 
+  left:-18.5px;
+  z-index:3;
+  top:-30px;
+}
+
+.clouds {
+  position: absolute;
+  top:50px;
+  left:100px;
+}
+
+@keyframes cloud {  
+  from{ 
+    left:-150px; 
+  }
+  to{ 
+    left: 400px; 
+  }
+}
+
+.cloudOne, .cloudTwo, .cloudThree {
+  position: absolute;
+  width: 50px;
+  height: 25px;
+  background-color: #fff;
+  border-radius:100px 100px 0 0;
+}
+
+.cloudOne {
+  top:0;
+  left:0;
+  animation: cloud 3s linear infinite reverse;
+}
+
+.cloudTwo {
+  top:50px;
+  left:100px;
+  animation: cloud 2.5s linear infinite reverse;
+}
+
+.cloudThree {
+  top:250px;
+  left:50px;
+  animation: cloud 2.8s linear infinite reverse;
+}
+
+.cloudOne:before, .cloudTwo:before, .cloudThree:before {
+  content:"";
+  position: absolute;
+  width: 25px;
+  height: 12.5px;
+  background-color: #fff;
+  border-radius:100px 100px 0 0;
+  left:-20px;
+  top:12.5px;
+  box-shadow: 65px 0 #fff;
+}
+
+
+/* CUSTOM: FLAME ANIMATION */
+
+.burn-container {
+	background: transparent;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+
+	position: absolute;
+	top: 0;
+	left: 30%;
+}
+
+.flame {
+	width: 150px;
+	height: 150px;
+	background: linear-gradient(-45deg, red, orange);
+	border-radius: 150px 150px 0px 150px;
+	transform: rotate(-135deg);
+	animation: 0.1s flame infinite;
+	filter: blur(10px);
+	position: relative;
+	box-shadow: 17px 20px 90px #700;
+	border: 45px solid black;
+	border-left-width: 25px;
+	border-top-width: 25px;
+}
+
+.flame:after, .flame:before {
+  content: "";
+  width: 100px;
+  height: 100px;
+  display: block;
+  position: absolute;
+  background: linear-gradient(-45deg, red, orange);
+  animation: 0.2s flame infinite;
+  transform: scale(0.8) rotate(20deg);
+  border-radius: 100px 100px 0px 100px;
+  top: 20px;
+}
+.flame:before {
+  top: 0;
+  animation-duration: 0.09s;
+  transform: scale(0.9) rotate(-15deg) translate(10px, 0px);
+}
+
+@keyframes flame {
+	0% {
+		height: 150px;
+		width: 150px;
+	}
+	50% {
+		height: 140px;
+		width: 140px;
+	}
+	100% {
+		height: 150px;
+		width: 150px;
+	}
+}
+
+
+/* CUSTOM:  Exploding animation */
+
+#contentArea {
+    transition: 0.65s;
+    padding-bottom: 100px;
+}
+#contentArea.explode, 
+#dash-feedback.explode {
+    opacity: 0;
+    transform: scale(3) rotate(10deg);
+}
+
+
+
+
+/*** Flip card code ****/
+
+/* The flip card container - set the width and height to whatever you want. We have added the border property to demonstrate that the flip itself goes out of the box on hover (remove perspective if you don't want the 3D effect */
+.flip-card {
+  background-color: transparent;
+  width: 100%;
+  height: auto;
+  border: 1px solid transparent;
+  perspective: 1000px; /* Remove this if you don't want the 3D effect */
+}
+
+/* This container is needed to position the front and back side */
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+/* Do an horizontal flip when you move the mouse over the flip box container */
+/* .flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+} */
+
+.flip-card.flipped .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+/* Position the front and back side */
+.flip-card-front, .flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden; /* Safari */
+  backface-visibility: hidden;
+}
+
+/* Style the front side (fallback if image is missing) */
+.flip-card-front {
+  background-color: #bbb;
+  color: black;
+}
+
+/* Style the back side */
+.flip-card-back {
+  background-color: dodgerblue;
+  color: white;
+  transform: rotateY(180deg);
+}
+
+.card-front-img, .card-back-img {
+	width: 100%;
+	/* border-radius: 21px; */
+}
+
+
+.hand {
+  position: relative;
+  top: -200px;
+  background: rgba(255,255,255,0.2);
+  margin-bottom: -140px;
+}
+
+.hand.profile {
+  top: -190px;
+  min-height: 135px;
+  margin-bottom: -140px;
+}
+
+
+
+/********************************* MEDIA QUERY AREA *******************************/
+
+/* for mobile viewport - scores page */
+#myHandData table td, #sortTable td {
+  font-size: 14px;
+}
+
+/* hide final total hands > 10 */
+
+#topHandData #sortTable tbody {
+  transition: all 0.2s linear;
+}
+
+#topHandData #sortTable tbody tr:nth-child(n+7) {
+ display: none;
+}
+
+#topHandData.showall #sortTable tbody tr:nth-child(n+7) {
+ display: table-row;
+}
+
+#showAllHandsBtn {
+  animation: roll 3s infinite;
+  opacity:  0.7;
+}
+
+#showAllHandsBtn:hover {
+  opacity: 1;
+}
+
+#showAllHandsBtn.active {
+  transform: rotate(180deg);
+  
+}
+
+/* NEW */
+/* hide final total hands > 10 */
+
+#game-scores #sortTable tbody {
+  transition: all 0.2s linear;
+}
+
+#game-scores #sortTable tbody tr:nth-child(n+7) {
+ display: none;
+}
+
+#game-scores.showall #sortTable tbody tr:nth-child(n+7) {
+ display: table-row;
+}
+
+#showAllHandsBtn {
+  animation: roll 3s infinite;
+  opacity:  0.7;
+}
+
+#showAllHandsBtn:hover {
+  opacity: 1;
+}
+
+#showAllHandsBtn.active {
+  transform: rotate(180deg);
+  
+}
+
+#cpt-logo {
+  height: 20px; 
+  padding-left: 3px;
+}
+
+#distractor {
+  margin: 0 auto; 
+  width: 100%; 
+  height: 450px; 
+  border: 3px solid grey; 
+  border-radius: 20px;
+}
+
+
+/* Main menu */
+.nav-link {
+  padding: 0.25rem 0.25rem;
+}
+
+
+
+/** over 600px will target tablet and above **/
+@media only screen and (min-width: 600px) {
+
+  /* for shortcut on hand mint that will show NFT - position below mint */
+  .hotCutLink {
+    position: absolute;
+  }
+  
+  .hand {
+    height: 133px;
+    width: auto;
+  }
+
+  .hand img {
+    max-width: 100px;
+  }
+
+  .hand table td {
+    width: 100px;
+  }
+
+  .hand.profile {
+    top: -190px;
+    margin-bottom: -210px;
+  }
+
+  #myHandData table td, #sortTable table td {
+    font-size: 16px;
+  }
+
+  /* Menu padding */
+  .nav-link {
+    padding: 0.25rem 0.75rem;
+  }
+
+  .hand-container {
+    float: left;
+    margin-right: 2%;
+    width: 48%;
+  }
+
+}
+
+
+
+
