@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="Cache-control" content="public">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>cryptopoker minting dApp</title>
+
+	<!-- favicon code -->
+	<link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+	<meta name="msapplication-TileColor" content="#da532c">
+	<meta name="theme-color" content="#ffffff">
+
+	<link href="css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+	<link href="css/myStyle.css" rel="stylesheet" >
+
+</head>
+<body>
+
+	
+	<!-- <div class="container" id="main-container">
+		<div class="row">
+			<div class="col" id="main-column">
+
+				<h1 class="header-image"><img src="../img/cp-v1-art/cp-hero-logo-full.png" alt="Cryptopoker Dealr dApp Logo" /></h1> -->
+
+				<!-- <div id="UIArea"></div>
+				<div id="contentArea"><hr></div> -->
+
+				<!-- this is the container for the rainbowkit connect button and NEW UI -->
+				<div id="root"></div>
+				<div id="rootTwo"></div>
+
+				<!-- persistent bottom navigation bar -->
+				<!-- <div class="fixed-bottom">
+					<ul id="base-nav" class="nav justify-content-center nav-fill">
+						<li class="nav-item">
+							<a class="nav-link" href="#" onclick="goHome(this)">Home</a>
+						</li>
+						<li class="nav-sep">|</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#" onclick="gotoDashboard(this)">Dashboard</a>
+						</li>
+						<li class="nav-sep">|</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#" onclick="gotoMint(this)">Dealr</a>
+						</li>
+						<li class="nav-sep">|</li>
+						<li class="nav-item">
+							<a class="nav-link" href="https://opensea.io/collection/cryptopoker-nft" target="_blank">Trade</a>
+						</li>
+						<li class="nav-sep">|</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#" onclick="gotoScoreboard(this)">Scores</a>
+						</li>
+					</ul>
+				</div> -->
+
+			<!-- </div>
+		</div>
+	</div> -->
+
+	<!-- Alchemy Badge -->
+	<script>const BADGE_ID = '55d8b59b9b5dbec4';</script>
+	<script type="text/javascript" src="https://static.alchemyapi.io/scripts/badge/alchemy-badge.js"></script>
+	<a href="#">
+		<img onclick=logBadgeClick() id="badge-button" style="width:240px;height:53px" src="https://static.alchemyapi.io/images/marketing/badge.png" alt="Alchemy Supercharged" />
+	</a>
+
+</body>
+
+<pre id="out"></pre>
+
+<!-- bootstrap js -->
+<script src="js/bootstrap.bundle.min.js" crossorigin="anonymous" type="module"></script>
+
+<!-- my scripts -->
+<script type="module" src="src/index.tsx"></script>		<!-- loads the DOM frame and injects to #root -->
+
+<!-- <script type="module" src="js/myScript.jsx"></script> -->
+
+<!-- <script type="module" src="js/main.js"></script> -->
+<!-- <script type="module" src="js/modmain.js"></script> -->
+
+
+</html>

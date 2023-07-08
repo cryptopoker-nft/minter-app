@@ -1,0 +1,30 @@
+{
+  "dependencies": {
+    "@rainbow-me/rainbowkit": "^1.0.2",
+    "@uniswap/widgets": "^2.22.2",
+    "dotenv": "^16.3.1",
+    "ethers": "5.7.2",
+    "nft.storage": "^6.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-redux": "^8.1.0",
+    "use-debounce": "^9.0.4",
+    "viem": "^1.0.7",
+    "wagmi": "1.2"
+  },
+  "name": "cryptopoker_nft_dealer",
+  "version": "2.0.1",
+  "description": "CP Design Testing",
+  "main": "index.html",
+  "devDependencies": {
+    "vite": "^4.3.9"
+  },
+  "scripts": {
+    "dev": "vite --host",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "tomtranmer",
+  "license": "ISC"
+}
