@@ -1,12 +1,6 @@
 import React, { useEffect } from "react";
 import { useAccount, useDisconnect } from 'wagmi';
 
-// import functions for checkCount and getBalance
-import { checkCount, getBalance } from "../../js/viemConnect.js";
-import { buildSocialMedia } from "../functions/buildSocialMedia.jsx";
-import { homeAccordion } from "../data/homeAccordion.jsx";
-
-
 function editProfile(){
 	console.log("edit profile");
 	// navigate to edit Profile page
@@ -16,39 +10,33 @@ export function DashHeader({cu, setPage}) {
 	const { address, connector, isConnected } = useAccount();
 	const { disconnect } = useDisconnect();
 
-	console.log(cu);		// is OK
+	// console.log(cu);		// is OK
 
 	useEffect(() => {
 		if(isConnected){
-			console.log(isConnected, cu);
+			// console.log(isConnected, cu);
 			// getGameInfo(null,null,null);		// trigger data request
 		}
 	});
 
 	function HeaderButtons(){
-		console.log("THIS NEEDS CONDITIONAL DISPLAY if has no tokens, change button to 'Get Tokens'");
-		return (	<ul className="dash-header-buttons">
-			<li><button title="Coming Soon..." className="btn btn-outline-primary disabled" onClick={console.log("profile")}>Edit My Profile</button></li>
-			{/* {cu.cpTokens > 0 ? 
-				<li><button className="btn btn-lg btn-primary" onClick={console.log("mint")}>Let's Play</button></li>
-				: 
-				<li><button className="btn btn-outline-success" onClick={console.log("claim")}>Get Tokens</button></li>
-			} */}
-			<li><button className="btn btn-outline-danger" onClick={disconnect}>Log Out Wallet</button></li>
-		</ul>)
+		return (	<div className="button-container">
+			<button title="Coming Soon..." className="btn btn-primary disabled" onClick={() => console.log("profile")}>Edit My Profile</button>
+			<button className="btn btn-danger" onClick={disconnect}>Log Out Wallet</button>
+		</div>)
 	}
 
     return (<>
 	{isConnected ? 
 		<>
-			<h3 className="headerTitle">Dashboard</h3> 
-			<p>User ID:
+			<h3 className="mainHeader">Dashboard</h3> 
+			<p className="colorYellow">User ID:
 				{address}
 
 			</p>
 			<HeaderButtons />
 		</>
-		: <h3>Login Please</h3>
+		: <h3 className="mainHeader">Login Please</h3>
 		}
 	</>);
 }

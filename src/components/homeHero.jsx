@@ -1,5 +1,7 @@
 import React from 'react';
 
+// import { publicClient } from 'viem';
+
 import homeCards from '/img/home/cp-card-home.png';
 import homeTag from '/img/home/art-tagline-cp.png';
 
@@ -24,7 +26,7 @@ function playSound(audio){
 export function HomeHero() {
 
     let homeHero = homeCards;
-    let titleOverlay = "Cryptopoker";
+    let titleOverlay = "";      // sponsor or subtitle
 
     const TitleSub = () => {
         return (<img className='tagline-image' src={homeTag} alt='Generative Collect & Trade NFT Game' />);
@@ -33,6 +35,10 @@ export function HomeHero() {
 
     let audio = new Audio(mainAudio);
     // playSound(audio);
+
+    // figure out connected chain with viem
+    // const chainId = publicClient.getChainId()
+    // console.log("chainId: ", chainId);
 
     // FUTURE UPGRADES: Themes
     // if((typeof(currentTheme) !== "undefined") && (currentTheme === 'bcard')) {

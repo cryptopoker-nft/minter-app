@@ -1,11 +1,11 @@
-import React from "react";
+import React, {useRef} from "react";
 import { useAccount } from "wagmi";
 
-import { DisplayCard } from "./displayCard";
-import { httpGet } from './xmlHttpReq';
+import { DisplayCard } from "../functions/displayCard";
+import { httpGet } from '../functions/xmlHttpReq';
 
 
-import { BurnBtn } from "../components/BurnBtn.jsx";
+import { BurnBtn } from "./BurnBtn.jsx";
 
 
 import heroLogo from "/img/cp-hero-logo-full.png";
@@ -36,6 +36,12 @@ function playHandBtn(){
 
 export function MintAfterSave(props){
 
+    const ref = useRef(null);
+
+    const handleScroll = () => {
+      ref.current?.scrollIntoView({ behavior: 'smooth' });
+    };
+
     console.log("if failing aftermint, check async here -> it's own function?");
 
 
@@ -57,6 +63,8 @@ export function MintAfterSave(props){
     // could also use mintNum and getURI to get URI if this is causing trouble.
     // may need a setTimeout to wait for the mint to complete before calling this function.
 
+    console.log("REVEAL IMAGE LOADING ISSUE HERE: sometimes does not get data. - try component await conditions on props - nope, not working.");
+
     // let thisURI = result;
 	console.log(uri);
 	let urlTarget = "https://cryptopoker.mypinata.cloud/ipfs/" + uri.slice(7);
@@ -64,7 +72,9 @@ export function MintAfterSave(props){
     console.log("Need to get the image ASYNC from the URI: %s", urlTarget);
 
     console.log(props.svg[2]);
-    let imgHashFixed = props.svg[2].substr(1);
+    //need to trim IPFS prefix
+
+    let imgHashFixed = props.svg[2].substr(6);
     let thisImageUrl = "https://cryptopoker.mypinata.cloud/ipfs"+imgHashFixed;
     //  bafybeiaaywhj5i4ag47tofgpojsdknf7eq645havodx32l2nenjzgrlgmi/cp-hand-279.svg";
     console.log(thisImageUrl);
@@ -129,14 +139,26 @@ export function MintAfterSave(props){
 
     // let imgSrc="img/mint/"+activeGameNum+"-"+currentUserAddress+"-"+mintNum+".svg";     // the TEMP image stored on the server as the NFT is created. LIVE SERVER ONLY
 
+    if(ref){
+        console.log(ref);
+        handleScroll();
+
+        if(document.getElementById('nft-img-two')){
+            document.getElementById('nft-img-two').scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+
     if(hand){
         // console.log("hand is ready to display");
 
         // console.log("Need a test for 5 flipped here, then enable the NFT display in the BG and the buttons below (currently always enabled).");
     
+        let assessPlainText = props.svg[1].textContent;
+        console.log(assessPlainText);
+
         return (<>
             {/* ART REVEAL HEADER IMAGE */}
-            <img id='nft-img-two' className='image-wide nft-img' src={heroLogo} alt='Header for NFT display area.' />
+            <img ref={ref} id='nft-img-two' className='image-wide nft-img' src={heroLogo} alt='Header for NFT display area.' />
 
             <p id="nft-assess"
             >Assessment: {props.svg[1]}</p>
@@ -188,7 +210,7 @@ export function MintAfterSave(props){
 
             <div className='button-container row'>
                 <div className='col'>
-                    <a id='playHand' className='btn btn-success btn-lg' title='HODL this hand and move it to your dashboard.' onClick={playHandBtn}>HODL</a>
+                    <a id='playHand' className='btn btn-mint btn-lg' title='HODL this hand and move it to your dashboard.' onClick={playHandBtn}>HODL</a>
                 </div>
                 <div className='col' style={{"display":"none"}}>
                     <a id='dustHand' title='Dust this hand and burn it to receive 5 cards.' className='btn btn-outline-danger btn-lg disabled' onClick={dustHandBtn}>DUST</a>

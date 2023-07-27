@@ -71,14 +71,16 @@ export function ClaimInfo() {
 
 	return (<>
 		<hr />
-		<p><strong>What you get when buying in:</strong></p>
-		<ul>
-			<li>Refill to 5 CPT<br />(you cannot claim while holding tokens, you cannot mint while holding 5 hands)</li>
-			<li>One <strong>CP Hand NFT</strong> can be minted for each CP Token you hold.</li>
-			<li>The game receives fees based on the number of plays (base mint fee).</li>
-			<li>BaseFee will be dynamic in the game and will increase as the total number of hands minted reaches the maximum number, so plan your trades, folds and rebuys carefully to get the most from your buys.</li>
-			<li>Pay attention to current game specs as each CP game can have specific proceeds allocations, prizing requirements and awards. DYOR.</li>
-		</ul>
+		<div id="claimContent">
+			<h3>What you get when buying in:</h3>
+			<ul>
+				<li>Refill to 5 CPT<br />(you cannot always claim FREE tokens, you cannot mint while holding 5 hands)</li>
+				<li>One <strong>CP Hand NFT</strong> can be minted for each CP Token you hold.</li>
+				<li>The game receives fees based on the number of plays (base mint fee).</li>
+				<li>BaseFee will be dynamic in the game and will increase as the total number of hands minted reaches the maximum number, so plan your trades, folds and rebuys carefully to get the most from your buys.</li>
+				<li>Pay attention to current game specs as each CP game can have specific proceeds allocations, prizing requirements and awards. DYOR.</li>
+			</ul>
+		</div>
 		<hr />
 	</>);
 

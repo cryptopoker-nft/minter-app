@@ -16,7 +16,6 @@ export const Home = ({cu}) => {
 
 
         return (<>
-            <HomeHero />
             <div className='button-container'>
                 <ConnectButton />
             </div>
@@ -27,8 +26,13 @@ export const Home = ({cu}) => {
         return (
             <>
             {/* <iframe style={{marginTop:"25px", width:"100%", height:"350px"}} src="https://www.youtube.com/embed/P7sq27793O8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> */}
-
-            <iframe width="418" height="743" src="https://www.youtube.com/embed/aSInzlrSoao" title="what is cryptopoker?" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
+            <HomeHero />
+            <div className='button-container-no-bg'>
+                <ConnectButton />
+            </div>
+            <div id="unlogged-adframe">
+                <iframe width="418" height="743" src="https://www.youtube.com/embed/aSInzlrSoao" title="what is cryptopoker?" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
+            </div>
             </>
         );
     }

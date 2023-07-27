@@ -14,10 +14,10 @@ export const Mint = ({cu, cc, setPage}) => {
         // console.log(cu)        // show currentUser object
 
         return (<>
-            <h3 title={cu.address}>Welcome to the DEAL/MINT page.</h3>
+            <h3 className="mainHeader" title={cu.address}>Welcome to the DEAL/MINT page.</h3>
             
             <div id="dataArea">
-                <h2>Pay the dealer 1 CPT to build your hand.</h2>
+                <h4 className="subHeader">Pay the dealer 1 CPT to build your hand.</h4>
             </div>
 
             {cu.cpTokens > 0 ?
@@ -32,7 +32,7 @@ export const Mint = ({cu, cc, setPage}) => {
 
             
 
-            <h3 className='text-center'>*FUN ONLY* Distractor *FUN ONLY*</h3>
+            <h3 className='mainHeader'>*FUN ONLY* Distractor *FUN ONLY*</h3>
             <Distractor />
             
         </>);
