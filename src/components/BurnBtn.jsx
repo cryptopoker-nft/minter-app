@@ -1,8 +1,8 @@
 import React from "react";
 
-import { useAccount, usePrepareContractWrite, useContractWrite } from 'wagmi'
+import { useAccount, usePrepareContractWrite, useContractWrite } from 'wagmi';
 
-import { cpContractPolygon, cpABIPolygon } from "../../js/modules/contracts.js";
+import { cpContractPolygon, cpABIPolygon, cpMinterABI, cpMintOp, cpMintArb, cpMintBase } from "../data/contracts.jsx";
 
 // animation function
 function foldHandBtn(output) {
@@ -25,7 +25,7 @@ function foldHandBtn(output) {
 	output.innerHTML += "<div class='burn-container'><div class='flame'></div></div>";
 
 	// countdown and add class explode 
-	var fade = output;			//	document.getElementById("dash-content-area");
+	var fade = document.getElementById("main-container");
     // animation
     var intervalID = setInterval(function () {
           
@@ -36,7 +36,7 @@ function foldHandBtn(output) {
         if (fade.style.opacity > 0) {
             fade.style.opacity -= 0.033;
 
-            if(fade.style.opacity < 0.7) {
+            if(fade.style.opacity < 0.79) {
             	// light the fuse
 	            fade.classList = "explode";
 			} 
@@ -52,7 +52,7 @@ function foldHandBtn(output) {
             clearInterval(intervalID);
         }
           
-    }, 200);
+    }, 300);
 
 	// handle the actual removal of the hand from storage
 	// console.log("NEEDFIX ->Either refresh UI, or remove the correct one from the array list");
@@ -64,7 +64,7 @@ function foldHandBtn(output) {
 		// dashboard();
 
 		location.reload();
-	}, 5000);
+	}, 4000);
 
 	// LATER: will need to sync this to the DB /chain
 		
@@ -77,54 +77,74 @@ function foldHandBtn(output) {
 
 export function BurnBtn(props) {
 
-    // console.log(props);
-    console.log(props.tokenId);   // used
-    console.log(props.title);   // used
-    // let title = props.title;
-    // console.log(props);
+  const { address, connector, isConnected } = useAccount();
 
-    //let tokenId = 1;
-    // need token ID
+  //console.log(props);       // OK
+  let chainId = props.chainId;
+  let mintAddr = cpContractPolygon;   // default to polygon
 
-    const { address, connector, isConnected } = useAccount();
-	console.log(address);       // OK
+  if(chainId === 8453) {
+    mintAddr = cpMintBase;
+  } else if(chainId === 42161) {
+    // console.log("connected to ARBITRUM");
+    mintAddr = cpMintArb;
 
-	const { config } = usePrepareContractWrite({
-		address: cpContractPolygon,
-		abi: cpABIPolygon,
-		functionName: 'transferFrom',
-		args: [address, cpContractPolygon, props.tokenId]
-	});
-	
-	const { data, isLoading, isSuccess, write } = useContractWrite(config);
+  } else if(chainId === 10) {
+    // console.log("connected to OPTIMISM");
+    mintAddr = cpMintOp;
 
-  const waitThenReload = () => {
-    console.log("waiting 3 seconds then reloading");
+  } else if(chainId === 137) {
+    // no change needed ATM
 
-    // play Burn Animation -> insert function call here
-
-    setTimeout(() => {
-      window.location.reload();
-    }, 3000);
-  }
-   
+  } else {
+    // dont have chain ID, not connected?
     return (
       <div>
-
-        <button 
-            disabled={!write} 
-            onClick={() => write?.()} 
-            style={{color:"red","fontWeight":"bold", float:"right"}}>
-            {props.title ? props.title : "Burn Hand NFT"}
-        </button>
-        {/* INTERNAL */}
-        { isSuccess && <div>Transaction: {JSON.stringify(data)}</div> }
-        { isSuccess && console.log(props.tokeId + " burned") }
-        {/* USER */}
-        { isLoading && <div>Check Wallet</div> }
-        { isSuccess && foldHandBtn() }
-        { /* isSuccess && alert("Hand has been burned!") */ }
-
+        "Please Wait"
       </div>
     )
+  }
+
+  const { config } = usePrepareContractWrite({
+    address: mintAddr,
+    abi: cpMinterABI,
+    functionName: 'transferFrom',
+    args: [address, mintAddr, props.tokenId]
+  });
+  
+  const { data, isLoading, isSuccess, write } = useContractWrite(config);
+
+  return (
+    <div>
+
+      <button 
+          disabled={!write} 
+          onClick={() => write?.()} 
+          style={{color:"red","fontWeight":"bold", float:"right"}}>
+          {props.title ? props.title : "Burn Hand NFT"}
+      </button>
+      {/* INTERNAL */}
+      { isSuccess && <div className="colorOrange">Transaction: {JSON.stringify(data)}</div> }
+      { isSuccess && console.log(props.tokeId + " burned") }
+      {/* USER */}
+      { isLoading && <div className="colorYellow">Check Wallet</div> }
+      { isSuccess && foldHandBtn() }
+      { /* isSuccess && alert("Hand has been burned!") */ }
+
+    </div>
+  )
+
+	
+
+  // const waitThenReload = () => {
+  //   console.log("waiting 3 seconds then reloading");
+
+  //   // play Burn Animation -> insert function call here
+
+  //   setTimeout(() => {
+  //     window.location.reload();
+  //   }, 3000);
+  // }
+   
+    
 }

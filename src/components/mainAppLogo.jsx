@@ -5,7 +5,11 @@ import heroImg from '/img/cp-hero-logo-full.png';
 export const MainAppLogo = () => {
     return (<>
         <h1 className="header-image">
-            <img src={heroImg} alt="Cryptopoker Dealr dApp Logo" />
+            <img 
+                src={heroImg} 
+                alt="Cryptopoker Dealr dApp Logo" 
+                onClick={() => window.location.reload()}
+            />
         </h1>
     </>);
 }

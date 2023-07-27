@@ -3,8 +3,9 @@ import React from "react";
 //getBalance
 import { getBalance } from "../../js/viemConnect.js";
 import { cpContractPolygon } from "../../js/modules/contracts.js";	
+import { cpMintArb, cpMintOp, cpMintBase } from "../data/contracts.jsx";
 
-export async function scoreboardFinalOutput(gameData, gameTotal, sumData) {
+export async function scoreboardFinalOutput(chainId, gameTotal, sumData) {
 	/***************************************
 	 * 
 	 * Final table output generated here
@@ -13,9 +14,21 @@ export async function scoreboardFinalOutput(gameData, gameTotal, sumData) {
 	//compare with gameData from the database
 
 	let activeGameNum = 1;
+	let currentContract = cpContractPolygon;
+
+	if(chainId === 8453) {
+		currentContract = cpMintBase;
+		activeGameNum = 4;
+	} else if(chainId === 10) {
+		currentContract = cpMintOp;
+		activeGameNum = 2;
+	} if(chainId === 42161) {
+		currentContract = cpMintArb;
+		activeGameNum = 3;
+	}
 
 
-	let endTime = gameData.end_time;
+	// let endTime = gameData.end_time;
 	// let cptokenTreasury = parseInt(gameData.cptoken_treasury) - parseInt(gameData.token_sold);
 	// let ethTreasury = gameData.eth_treasury;
 
@@ -27,13 +40,13 @@ export async function scoreboardFinalOutput(gameData, gameTotal, sumData) {
 	// let activePlayers = gameData.unique_addr -1;		// -1 to account for contract ownership of burned hands
 	// OLD: calculated from DB
 	// let in_play = gameData.hands_in_play;
-	let total = gameData.total_hands;
+	// let total = gameData.total_hands;
 	// let fold = gameData.total_hands - gameData.hands_in_play;
 
-	console.log("Testing for Equality - DB:" + total + " vs. Chain:" + gameTotal);		// expecting equality
+	// console.log("Testing for Equality - DB:" + total + " vs. Chain:" + gameTotal);		// expecting equality
 
 	// get fold data by number of hands owned by contract address.
-	let numFolded = await getBalance(cpContractPolygon);		//	cpContract.balanceOf(currentContract);		// this gets the number of hand owned by the contract address (i.e. folded)
+	let numFolded = await getBalance(currentContract, chainId);		//	cpContract.balanceOf(currentContract);		// this gets the number of hand owned by the contract address (i.e. folded)
 	console.log("Num Folded: " + numFolded);
 
 	let pairs = sumData[0];
@@ -47,6 +60,7 @@ export async function scoreboardFinalOutput(gameData, gameTotal, sumData) {
 
 	// gametotal from cpCount -> passed in
 	let realInPlay = gameTotal - Number(numFolded);
+	console.log(gameTotal, realInPlay)
 	let handsRemain = 10000 - gameTotal;
 
 	let pairsPct = 100*pairs/realInPlay;
@@ -109,7 +123,7 @@ export async function scoreboardFinalOutput(gameData, gameTotal, sumData) {
 		console.log(finalTableOutputArea, "Created");
 	}
 
-	finalTableOutputArea.innerHTML = "<h3>Game: 00"+activeGameNum+"  from contract data<br/><small>ends: "+endTime+"</small></h3>" + finalSumock;
+	finalTableOutputArea.innerHTML = "<h3 class=mainHeader>Game: 00"+activeGameNum+"  from contract data</h3>" + finalSumock;
 
 	return true;
 }

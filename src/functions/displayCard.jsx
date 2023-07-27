@@ -72,7 +72,7 @@ export function flipClick(a, isMint){
 			a.className = "flip-card flipped";
 
 			// add shown to the UI Display Card Rank and Suit.
-			a.previousSibling.classList = " shown";
+			a.previousSibling.classList.add("shown");
 
 			// check for is all 5 flipped and then set global handRevealed flag to true
 			// console.log(a.parentNode.nextSibling);		// should get next card
@@ -92,6 +92,8 @@ export function flipClick(a, isMint){
 		} else {
 			// reset it
 			a.className = "flip-card";
+
+			a.previousSibling.classList.remove("shown");
 
 			// wait 400ms for card to flip and then update the reverse face image
 			// setTimeout(updateFace(a), 500);
@@ -229,47 +231,42 @@ export function getFace(id){
 
 export function getCardDisplay(id){
 
+	// get card OBJECT from card id INT
+
 	let tempDeck = buildDeck();
-	// console.log(tempDeck);
-
-	// console.log(id);
-	// parseInt(id);
-
 	let cardMatch = tempDeck.find(x => x.id === id);
-	// console.log(cardMatch);
 
 	return cardMatch;
 
 }
 
 export function displayToId(display){
-	
-	let tempDeck = buildDeck();
-	// console.log(tempDeck);
 
-	// console.log(id);
-	// parseInt(id);
-
-	console.log(display);
+	// converts a card display (rank and suit), to a card id INT
+	let tempDeck = buildDeck();		// used in card lookup
 
 	// handle trailing commas
 	if (display.charAt(display.length - 1) == ',') {
   		display = display.substr(0, display.length - 1);
-		console.log(display, " Fixed");
+		// console.log(display, " Fixed");
 	}
 
+	//console.log(display);
+
 	// hotfixes 10s
-	if(display === "10♠"){ console.log("wtf"); return 10; }
-	if(display === "10♥"){ console.log("wtf"); return 23; }
-	if(display === "10♦"){ console.log("wtf"); return 36; }
-	if(display === "10♣"){ console.log("wtf2"); return 49; }
+	if(display === "10♠"){ return 10; /* console.log("wtf")*/ }
+	if(display === "10♥"){ return 23; }
+	if(display === "10♦"){ return 36; }
+	if(display === "10♣"){ return 49; }
 
 	// given display, return id
 	let cardMatch = tempDeck.find(x => x.display === display);
 
-	// let cardMatch = tempDeck.find(x => x.id === id);
-	// console.log(cardMatch);
-	if(cardMatch.id){
+	//console.log(cardMatch);
+
+	if(!cardMatch) {
+		return 9;
+	} else if(cardMatch.id){
 		return cardMatch.id;
 	} else {
 		console.log("Error");

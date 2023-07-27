@@ -11,8 +11,7 @@ export function HomeContent(props) {
 
 	useEffect(() => {
 		if(isConnected){
-			// console.log(isConnected);
-			getGameInfo(null,null,null);		// trigger data request
+			buildGameHomeOuput();
 		}
 	});
 
@@ -45,25 +44,56 @@ export function HomeContent(props) {
 	
 	}
 
+	function gameBadges(df,dc){
+
+		let condBuyInFee = "Free Faucet Claim*";
+
+		if(!df){
+			df = 0.001;
+		}
+		if(!dc){
+			dc = "MATIC";
+		}
+
+		return "<ul class='badge-container'>\
+			<li class='badge'>baseFees: "+df+" "+dc+"</li>\
+			<li class='badge free'>"+condBuyInFee+"</li>\
+		</ul>";
+	}
+
 	// tis uses JS to atrget the DOM and insert the game data content.
-	async function buildGameHomeOuput(end_time, total_hands) {
+	async function buildGameHomeOuput() {
 
-		console.log("Running buildGameHomeOuput", end_time, total_hands);
+		// get the current number of hands in play
+		let total_hands = Number(await checkCount(137));		
+		let total_hands_op = Number(await checkCount(10));		
+		let total_hands_arb = Number(await checkCount(42161));		
+		let total_hands_base = Number(await checkCount(8453));		
+
+		let end_time = "2023-09-01 11:00:00";
+		let op_end_time = "2023-12-31 11:00:00";
+		let arb_end_time = "2024-01-30 11:00:00";
+		let base_end_time = "2024-01-30 11:00:00";
+
+		// console.log("Running buildGameHomeOuput", end_time, total_hands);
 		let pctNum = total_hands/100;	// 100/10000 for current percentage
-		let gameContainer = document.getElementsByClassName('gameHomeContainer');
+		let opPctNum = total_hands_op/100;	// 100/10000 for current percentage
+		let arbPctNum = total_hands_arb/100;	// 100/10000 for current percentage
+		let basePctNum = total_hands_base/100;	// 100/10000 for current percentage
 
-		// console.log(gameContainer);
+
+		let gameContainer = document.getElementsByClassName('gameHomeContainer');
 
 		// init some variables
 		let activeGameNum = 1;				// fixed
 		let currentUserAddress = address;	// received via connection
-		let currentUserPlays = Number(await getBalance(currentUserAddress));			// call getBalance to get current number of plays
+		let currentUserPlays = Number(await getBalance(currentUserAddress,137));			// call getBalance to get current number of plays
 
 		console.log("these vars should be loaded from a common repo or the API server");
-		let defaultFees = 0.001;
-		let defaultCurrency = "MATIC";
+		// let defaultFees = 0.001;
+		// let defaultCurrency = "MATIC";
 
-		let gameSponsorMessage = "<h4 class='sponsor-promo' title='today's sponsor or marketing promo link'>Play long term games with long term people <a href='https://nav.al/long-term' taregt='_blank'>...</a></h4>";
+		let gameSponsorMessage = "<h4 class='sponsor-promo' title='today's sponsor or marketing promo link'>Play long term games with long term people <a href='https://nav.al/long-term' taregt='_blank'>...</a></h4><p><sup>*</sup>while supplies last</p>";
 	
 		// ALL: home page
 	
@@ -74,31 +104,34 @@ export function HomeContent(props) {
 	
 		let contractChain = "Polygon ";	
 	
-		let gameData = "<div class='game-data' title='Should do a little progress bar style indicator here for each active game'>Game ID: <a href='#' onclick='scoreboard("+activeGameNum+")'>00"+activeGameNum+"</a> "+contractChain+" Contracts<br>Hands: <span id=gameTotalHands>"+total_hands+"</span>/10,000  -  Ends: <span id=gameEndTime>"+end_time+"</span><br>"
+		let gameData = "<div class='game-data' title='Should do a little progress bar style indicator here for each active game'>Game ID: <a href='#' onclick='scoreboard("+activeGameNum+")'>00"+activeGameNum+"</a> "+contractChain+" Contracts<br>Hands: <span id=gameTotalHands>"+total_hands+"</span>/10,000  -  Ends: <span id=gameEndTime>"+end_time+"</span><br>";
 	
 		let gameProgress = '<div class="progress"><div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="'+pctNum+'" aria-valuemin="0" aria-valuemax="100" style="width: '+pctNum+'%">'+pctNum+'%</div></div>';
-	
-		let condBuyInFee = "1st Buy-In Free";
-		let freePlay = "free";
+
+		let opGame = "<div class='game-data' title=''>Game ID: <a href='#' onclick='scoreboard()'>002</a> OP Mainnet Contracts<br>Hands: <span id=gameTotalHands>"+total_hands_op+"</span>/10,000  -  Ends: <span id=gameEndTime>"+op_end_time+"</span><br>";
+
+		let opProgress = '<div class="progress"><div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="'+opPctNum+'" aria-valuemin="0" aria-valuemax="100" style="width: '+opPctNum+'%">'+opPctNum+'%</div></div>';
+
+		let arbGame = "<div class='game-data' title=''>Game ID: <a href='#' onclick='scoreboard()'>003</a> Arbitrum One Contracts<br>Hands: <span id=gameTotalHands>"+total_hands_arb+"</span>/10,000  -  Ends: <span id=gameEndTime>"+arb_end_time+"</span><br>";
+
+		let arbProgress = '<div class="progress"><div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="'+arbPctNum+'" aria-valuemin="0" aria-valuemax="100" style="width: '+arbPctNum+'%">'+arbPctNum+'%</div></div>';
+
+		let baseGame = "<div class='game-data' title=''>Game ID: <a href='#' onclick='scoreboard()'>004</a> Base Mainnet Contracts<br>Hands: <span id=gameTotalHands>"+total_hands_base+"</span>/10,000  -  Ends: <span id=gameEndTime>"+base_end_time+"</span><br>";
+
+		let baseProgress = '<div class="progress"><div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="'+basePctNum+'" aria-valuemin="0" aria-valuemax="100" style="width: '+basePctNum+'%">'+basePctNum+'%</div></div>';
+
+
+		// first Polygon game
+		let gbPolygon = gameBadges(0.001, "MATIC");	
+		let gameOutput = gameData + gameProgress + gbPolygon + "</div>";		// format game data and display
+		// second OP game
+		gameOutput += opGame + opProgress + gameBadges(0.00001, "ETH") + "</div>";		// format game data and display
+		gameOutput += arbGame + arbProgress + gameBadges(0.00001, "ETH") + "</div>";		
+
+		gameOutput += baseGame + baseProgress + gameBadges(0.00001, "ETH") + "</div>";		
+
 
 		
-	
-		// currentUserPlays =  Number(await getBalance(currentUserAddress));		// set global variable
-
-		console.log("Set current user plays to hand count number: %d", currentUserPlays);
-	
-		if(currentUserPlays > 0){
-			freePlay = "";		//already redeemed freeplay
-			condBuyInFee = currentUserPlays +"/5 hands in play";
-		}
-	
-		let gameBadges = "<ul class='badge-container'>\
-							<li class='badge'>baseFees: "+defaultFees+" "+defaultCurrency+"</li>\
-							<li class='badge "+freePlay+"' onclick='addTokensPage()'>"+condBuyInFee+"</li>\
-						</ul>";
-	
-		let gameOutput = gameData + gameProgress + gameBadges + "</div>";		// format game data and dsiplay
-	
 		// this is for output of game promotional messgage and /or link
 		gameOutput += gameSponsorMessage;
 	

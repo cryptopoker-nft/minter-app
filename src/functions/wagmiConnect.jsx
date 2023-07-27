@@ -1,75 +1,44 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 
 import { useAccount, 
     useContractRead, 
     useContractWrite, 
     usePrepareContractWrite } from 'wagmi'
   
-import { parseEther } from 'viem'
-
 // f2: storeImageData
 import { NFTStorage } from 'https://cdn.jsdelivr.net/npm/nft.storage/dist/bundle.esm.min.js';
 
 
 
-import { faucetContract, faucetABI, cptAddress, cptABI, cpContractPolygon, cpABIPolygon } from "../../js/modules/contracts.js";			// this is to pull the chain-specific contracts and ABIs as needed.
+import { cptAddress, cptABI, cpContractPolygon, cpABIPolygon } from "../../js/modules/contracts.js";			// this is to pull the chain-specific contracts and ABIs as needed.
 
-import { getNewHand } from "../functions/getNewHand.jsx";
+import { faucetContract, cpFaucetOp, cptOpAddr, cptArbAddr, cpFaucetArb, cptBaseAddr, cpFaucetBase } from "../data/contracts.jsx";
 
+// functions
+import { getNewHand } from "./getNewHand.jsx";
 import { mintMainAlert } from "./mintMainAlert.jsx";
-import { MintAfterSave } from "./mintAfterSave.jsx";
-
 import { assessHand } from "./mintAssessHand.jsx";
 
 // art
-import chipImage from "/img/mint/chip.png";
+import chipImage from "/img/mint/chip-temp.jpg";
 import dealerPoster from "/img/mint/dealerPoster.png";
 import dealerVideo from "/img/mint/dealer.mp4";
-import mintImage from "/img/mint/mintRobot.png";
+import mintImage from "/img/mint/slot-temp.jpg";
 
 import chipSound from "/audio/chips.wav";
 import shuffleSound from "/audio/shuffle.wav";
 
+// components
+import { MintHand } from "../components/MintHand.jsx";
 
-// Contract WRITES using WAGMI
-export function UserClaimFive({setPage}) {
-    const { config, error } = usePrepareContractWrite({
-      address: faucetContract,
-      abi: faucetABI,
-      functionName: 'requestTokens',
-    })
-    const { data, isLoading, isSuccess, write } = useContractWrite(config)
 
-    const waitAndGoHome = () => {
-      console.log("waiting 3 seconds then reloading");
-
-      setTimeout(() => {
-        setPage("home");
-      }, 3000);
-
-    }
-   
-    return (
-      <div>
-        <button className='btn btn-success btn-lg' disabled={!write || error} onClick={() => write?.()}>
-            Claim 5CPT From Faucet
-        </button>
-        {error && (
-          <div>An error occurred preparing the transaction: {error.message}</div>
-        )}
-        {isLoading && <div>Check Wallet</div>}
-        {isSuccess && <div>Transaction: {JSON.stringify(data)}</div>}
-        {isSuccess && alert("5 CPT Claimed!")}
-        {isSuccess && waitAndGoHome()        /*location.reload() /* go home for now */ }
-      </div>
-    )
-}
-
+// Contract WRITES using WAGMI - moved to solo component file
 
 /** MINT PROCESS PROCEDURE *** KEY FUNCTIONS **/
 
 //UI - feeddback processing to user 
 function processFeedback(feedback){
+  // console.log("CHECK: if used_remove from file"); USED
   // CLEAR AND ADD CURRENT to UI data area
   document.getElementById("dataArea").innerHTML = feedback; 
 
@@ -88,18 +57,38 @@ export function PayCPT(props) {
 
   // console.log(props.mintNum);   
   
-  // TBD: RAINBOW WALLET is requesting MATIC ?!? Cache issue. MM OK
-  // console.log("TBD: RAINBOW WALLET is requesting MATIC ?!? Cache issue. MM OK");
-
-  let nextMintNum = props.mintNum;    // is next mintNum from loaded contract
+  let nextMintNum = props.cc.count;    // is next mintNum from loaded contract
   let singleToken = 1 * 10**18;       // represented with 18 digits for token Request
 	// console.log(singleToken);
 
+  let chainTokenAddr, chainFaucet;
+
+  // console.log(props.cc);
+
+  // CHECK CHAIN    console.log(props.chainId); //OK
+  if(props.cc.chainId === 8453){    // this is the BASE chain
+    chainTokenAddr = cptBaseAddr;
+    chainFaucet = cpFaucetBase;
+  } else if(props.cc.chainId === 42161 ){
+    // ARBITRUM
+    chainTokenAddr = cptArbAddr;
+    chainFaucet = cpFaucetArb;
+
+  } else if(props.cc.chainId === 10 ){
+    // OPTIMISM
+    chainTokenAddr = cptOpAddr;
+    chainFaucet = cpFaucetOp;
+  } else {
+    // POLYGON
+    chainTokenAddr = cptAddress;
+    chainFaucet = faucetContract;
+  }
+
   const { config } = usePrepareContractWrite({
-    address: cptAddress,
+    address: chainTokenAddr,
     abi: cptABI,
     functionName: 'transfer',
-		args: [	faucetContract, singleToken ]
+		args: [	chainFaucet, singleToken ]
   })
   const { data, isLoading, isSuccess, write } = useContractWrite(config)
 
@@ -120,6 +109,9 @@ export function PayCPT(props) {
   
     // need to get the URI for the metadta of the card to be minted and 
       // using myHand, we need to generate the SVG and store it on IPFS
+    // console.log(props.cc.chainId, hand );
+    hand.chainId = props.cc.chainId;    // this is the chainId of the NFT, store in object data
+    // console.log("BUG: safari+rainbow fails here with undefined error");
     let dataURI = await getURI(hand, setMySvg)    // this is the URI for the NFT
     // console.log(num,hand,dataURI);   // confirm correct return data? OK!
 
@@ -184,26 +176,27 @@ export function PayCPT(props) {
     // processFeedback("<p>1 CPT Sent! </p>");
 
     if(myHand && myURI){
-      processFeedback('<p>Hand and URI have been successfully generated. Lets MINT to see what you got!</p>');
+      processFeedback('<p class=subHeader>Hand and URI have been successfully generated. Lets MINT to see what you got!</p>');
     }
 
   }
  
   return (
     <div>
-      1. <button className="btn btn-lg btn-outline-primary" disabled={!write} onClick={() => write?.()}>
+      1. <button className="btn btn-lg btn-primary" disabled={!write} onClick={() => write?.()}>
           PAY 1 CPT
-          {isSuccess ? " (done)" : null}
+          {isSuccess ? <span className="colorBlack"> (done)</span> : null}
       </button>
-      2. <button className="btn btn-lg btn-outline-primary" disabled={!isSuccess} onClick={() => buildHandGetURI(nextMintNum)}>
+      2. <button className="btn btn-lg btn-primary" disabled={!isSuccess} onClick={() => buildHandGetURI(nextMintNum)}>
           {isSuccess ? "DEAL HAND" : "WAITING"}
-          {myHand && myURI ? " (done)" : null}
+          {myHand && myURI ? <span className="colorBlack"> (done)</span> : null}
       </button>
 
-      {/* Only show mintbutton if Pay is confirmedn and hand hans been dealt and URI generated */}
+      {/* Only show mintbutton if Pay is confirmed and hand has been dealt and URI generated */}
       3. 
       {isSuccess && myHand && myURI && (<MintHand 
         address={address} hand={myHand} myURI={myURI} svg={mySvg}
+        defaultFees={props.cc.defaultFees} chainId={props.cc.chainId}
         />) 
       }
 
@@ -220,26 +213,21 @@ export function PayCPT(props) {
       {isSuccess && <div>Transaction: {JSON.stringify(data)}</div>}
 
       {/* Feedback process 1 */}
-      {isSuccess && processFeedback("<p>1 CPT Sent! </p>")}
+      {isSuccess && processFeedback("<p class=subHeader>1 CPT Sent! </p>")}
       {isSuccess && playSound(chipSound)}
 
       {/* Feedback process 2 */}
-      {(myHand && myURI) && processFeedback('<p>Hand and URI have been successfully generated. Lets MINT to see what you got!</p>')}
+      {(myHand && myURI) && processFeedback('<p class=subHeader>Hand and URI have been successfully generated. Lets MINT to see what you got!</p>')}
 
-
-      {/* {isSuccess && <div>URI: {myURI}</div>} */}
-      {/* {isSuccess && alert("1 CPT Has been Sent!")} */}
       {/* possibly rather than show the explicit manuanl mint button, need to trigger the mint function here (maybe both is the answer). */}
       {/* This shows the main alert to be displayed to the user indicating the mint instructions */ }
       <div>{ isSuccess && mintMainAlert() }</div>
 
-      {/* Button testing - not really loaded here */}
-      { false &&
-        <MintAfterSave hand={myHand} mintNum={nextMintNum} svg={mySvg} />
-      }
     </div>
   )
 }
+
+// INTERNAL FUNCTIONS
 
 // step 2b: call build svg with the hand object after assessemnt (from button press in PayCPT function)
 async function getURI(myHand, setMySvg){
@@ -257,10 +245,26 @@ async function buildSvg(hand, assessment, attr, setMySvg) {
 
 	// console.log(hand);
   let activeGameNum = 1;
+  let borderColor = 'purple';
+
+  console.log(hand.chainId);
+  if(hand.chainId === 10 ){
+    // Optimism
+    activeGameNum = 2;
+    borderColor = 'red';
+  } else if(hand.chainId === 42161 ){
+    // Arbitrum
+    activeGameNum = 3;
+    borderColor = 'blue';
+  } else if(hand.chainId === 8453) {
+    // Base
+    activeGameNum = 4;
+    borderColor = 'lightblue';
+  }
 
 	let mySvg = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" viewBox="0 0 350 350"><style>.base { fill: white; font-family: sans-serif; font-size: 14px; } .title { font-size: 18px; font-weight:bold; fill: #F47A1F; font-family: sans-serif; } .alert{ text-decoration:underline; fill: #E6C65B; } .small{ font-size: 12px;} .heavy{ font: italic 20px serif;}</style>';
 
-	mySvg += '<rect width="100%" height="100%" fill="#3d3838" /><text x="10" y="25" class="title">CRYPTOPOKER HAND #: ' + hand.mintNum + ' / 10,000</text><text x="260" y="45" class="base small">gameId #: 00'+activeGameNum+'</text><text x="10" y="60" class="base">';
+	mySvg += '<rect width="100%" height="100%" rx="5" ry="5" fill="#3d3838" style="stroke:'+borderColor+';stroke-width:5;" /><text x="10" y="25" class="title">CRYPTOPOKER HAND #: ' + hand.mintNum + ' / 10,000</text><text x="260" y="45" class="base small">gameId #: 00'+activeGameNum+'</text><text x="10" y="60" class="base">';
 	mySvg += 'Card 1: ' + hand.card1.display + '</text><text x="10" y="80" class="base">Card 2: ' + hand.card2.display + '</text><text x="10" y="100" class="base">Card 3: ' + hand.card3.display + '</text><text x="10" y="120" class="base">Card 4: ' + hand.card4.display + '</text><text x="10" y="140" class="base">Card 5: ' + hand.card5.display + '</text>';
 	// TO DO
 	// -> Insert hand assessment here
@@ -285,7 +289,7 @@ async function buildSvg(hand, assessment, attr, setMySvg) {
   // confirm that we have the URI
 
   // we also have IPFS hash here for image storage and could use it rather than making the function call later
-  let ipfsPathname = ulMetadata.data.image.pathname;   //.slice(7);		// clips out just the IPFS cid for the image of the NFT
+  let ipfsPathname =  ulMetadata.data.image.href;   //.slice(7);		// clips out just the IPFS cid for the image of the NFT
   console.log(ipfsPathname);
 
   setMySvg([mySvg, assessment, ipfsPathname]);		// this is the SVG for the NFT, need to mint NFT
@@ -325,7 +329,7 @@ async function storeImageData(svg, filename, mintnum, handName, attr) {
   console.log("IPFS Module: Metadata stored on Pinata and IPFS with URL:", metadata.url);
   // document.getElementById("dataArea").innerHTML = "<h3>IPFS Module: Metadata stored on Pinata and IPFS</h3>";    // this is the metadata & image of the NFT
 
-  processFeedback("<h3>IPFS Module: Metadata stored on Pinata and IPFS</h3>");
+  processFeedback("<h3 class=subHeader>IPFS Module: Metadata stored on Pinata and IPFS</h3>");
 
   // let contentArea = document.getElementById("contentArea");
   // contentArea.innerHTML += "<h3>IPFS Module: Metadata stored on Pinata and IPFS</h3>";
@@ -339,105 +343,3 @@ async function storeImageData(svg, filename, mintnum, handName, attr) {
   
 }
 
-// step 3b: Save minted hand record to local database - mostly for immediate verification
-async function saveMintDatabase(handString, svg, mintNum) {
-
-	console.log("This is also required for saving the visual of the NFT image on the server for fast reroduction when showing the GAME FLIP FINAL ART on server create/upload.");
-
-	// if mintNum is not a plain number, it could be a problem.
-
-  
-  // let handString = handString; // this is used inlegacy DB storage only
-
-  // filesave mando
-  let activeGameNum = 1; // this should be a global variable
-  // let address = "";
-  // mintNum
-  // svg
-
-  if(!address){
-    address = "0xPrivacyMode";
-  }
-
-  console.log(handString, mintNum, svg, address);
-
-
-	// JS save image to server
-
-	var xhttp = new XMLHttpRequest();
-	xhttp.open("POST", "query/save-mint.php", true); 
-	xhttp.setRequestHeader("Content-Type", "application/json");
-	xhttp.onreadystatechange = function() {
-	   if (this.readyState == 4 && this.status == 200) {
-	     // Response
-	     //var response = this.responseText;
-
-	     console.log("This function stores the hand record in the local database.");
-
-	     // This is determined another way, but is kept here for verification purposes
-	     console.log(response);
-	     //let mintNum = response;
-
-	     contentArea.innerHTML += "<h3>SVG Artwork Module: Data compiled and artwork generated.</h3>";
-
-	   }
-	};
-	var data = {address:address,gameId: activeGameNum,hand: handString, svg:svg, handLength: 1, mintNum:mintNum};
-	xhttp.send(JSON.stringify(data));
-
-}
-
-// step 4: Shows the MINT BUTTON UI && call the payToMint function with the URI (button press, after preparing the contract write)
-export function MintHand(props) {
-  // UI component, this will be a pre-validated button that triggers the minting process
-
-  // console.log(props);
-
-  let uri = props.myURI;
-  let hand = props.hand;
-  let address = props.address;
-  let svg = props.svg;
-  // let ready = props.ready;
-
-  if(!uri) {
-    return (
-      <div>
-        <h3>DEAL HAND FIRST</h3>
-      </div>
-    )
-  } else {
-
-    let defaultFees = '0.001';		// 0.1% of 1 MATIC
-    let singleToken = 1 * 10**18;   // represented with 18 digits
-    // console.log(singleToken);
-  
-    const { config } = usePrepareContractWrite({
-      address: cpContractPolygon,
-      abi: cpABIPolygon,
-      functionName: 'payToMint',
-      args: [	address, uri ],
-      value: parseEther(defaultFees),
-    })
-    const { data, isLoading, isSuccess, write } = useContractWrite(config);
-  
-    return (
-      <>
-        <button className="btn btn-lg btn-outline-primary" disabled={!write} onClick={() => write?.()}>
-            MINT 1 HAND
-            {isSuccess ? " (done)" : null}
-        </button>
-        {/* {isLoading && mintMainAlert()} */}
-        {isLoading && <div>Check Wallet</div> }
-        {isSuccess && <div>Transaction: {JSON.stringify(data)}</div>}
-        {isSuccess && console.log("1 cpNFT Received!")}
-
-        {/* Feedback process 4 */}
-        {isSuccess && processFeedback("<p title='contractAddress:"+cpContractPolygon+"'>1 cpNFT Received!</p>")}
-
-        { isSuccess &&
-          <MintAfterSave hand={hand} mintNum={hand.mintNum} svg={svg} uri={uri} />
-        }
-      </>
-    )
-  }
-}

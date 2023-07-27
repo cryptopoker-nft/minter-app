@@ -7,6 +7,8 @@ import { cpMetaBak } from '../data/cpMeta.jsx';     // backup data for API serve
 // import functions for checkCount and getBalance
 import { checkCount, getBalance, getURI, getOwner } from "../../js/viemConnect.js";
 import { cpContractPolygon } from "../../js/modules/contracts.js";	
+import { cpMintArb, cpMintOp } from "../data/contracts.jsx";
+import { getCpMeta } from "../functions/getCpMeta.jsx";
 
 import { httpGet } from "../functions/xmlHttpReq.jsx";
 import { buildDeck } from "../functions/buildDeck.jsx";
@@ -16,28 +18,43 @@ import { scoreboardFinalOutput } from "../functions/scoreboardFinalOutput.jsx";
 import { triggerEndOfLoop } from "../functions/scoreTriggerLoopEnd.jsx";
 import { scoreHand } from "../functions/scoreHand.jsx";
 
+function getCC(chainId){
+	let currentContract = cpContractPolygon;
+	let activeGameNum = 1;
+
+	if(chainId === 10) {
+		currentContract = cpMintOp;
+		activeGameNum = 2;
+	} if(chainId === 42161) {
+		currentContract = cpMintArb;
+		activeGameNum = 3;
+	}
+
+	return [currentContract, activeGameNum];
+}
+
+function getOSLivePrefix(chainId){
+
+	if(chainId === 10) {
+		return "https://opensea.io/assets/optimism/";
+	} else if(chainId === 42161) {
+		return "https://opensea.io/assets/arbitrum/";
+	} else if(chainId === 137) {
+		return "https://opensea.io/assets/polygon/";
+	}
+
+}
+
 //this is the START of the main function to build the current data set for scoreboard
-async function printScoreboardData(gameData, address) {
+async function printScoreboardData(gameData, address, chainId) {
 
 	let currentUserAddress = address;		// get current user address
-	let cpCount = Number (await checkCount);		//await cpContract.count();
+	let cpCount = Number (await checkCount(chainId));		//await cpContract.count();
 
-	let currentContract = cpContractPolygon;
-	let cpMeta = cpMetaBak;		// backup data for API server call
-
-	console.log("This Needs to be overriden later!");
-	// overide
-	gameData = {
-		"end_time": "2023-09-01 11:00:00",
-		"cptoken_treasury": "10000",
-		"eth_treasury": 0.38936235000000086,
-		"token_total": 93,
-		"token_sold": 263,
-		"token_spend": -170,
-		"unique_addr": 30,
-		"total_hands": 239,
-		"hands_in_play": 108
-	}
+	let currentContract = getCC(chainId)[0];
+	let activeGameNum = getCC(chainId)[1];
+	// let cpMeta = cpMetaBak;		// backup data for API server call
+	let cpMeta = await getCpMeta(chainId);
 
 	//check against metadata storage for current
 	console.log(cpMeta.length, cpCount === cpMeta.length);		// want true here
@@ -50,8 +67,6 @@ async function printScoreboardData(gameData, address) {
 	var flush = 0;
 	var fullHouse = 0;
 	var royal = 0;
-
-	let cuCounter = 0;		// counter for the number of current user hands 
 
 	var outputData = "";
 
@@ -80,13 +95,15 @@ async function printScoreboardData(gameData, address) {
 			if(cpMeta[i].owner !== ""){
 				ownerOf = cpMeta[i].owner;				// it has a owner stored
 			} else {
-				ownerOf = await getOwner(i);			// get and update owner data for this mint
+				ownerOf = await getOwner(i,chainId);			// get and update owner data for this mint
 			}
 
 		} else {
 			// create the object
 			cpMeta[i] = {};
-			cpMeta[i].owner = await getOwner(i);
+			cpMeta[i].owner = await getOwner(i,chainId);
+
+			ownerOf = cpMeta[i].owner;
 		}
 
 		document.getElementById('mintCounter').innerHTML = "Reading Mint#:" + i;
@@ -103,12 +120,12 @@ async function printScoreboardData(gameData, address) {
 
 				if(!cpMeta[i].tokenURI) {
 					
-					cpMeta[i].tokenURI = await getURI(i);			// get it, set it
+					cpMeta[i].tokenURI = await getURI(i,chainId);			// get it, set it
 				}
 
 			} else {
 				// create the object
-				cpMeta[i] = {id: i, owner: await getOwner(i), tokenURI: await getURI(i)};
+				cpMeta[i] = {id: i, owner: await getOwner(i,chainId), tokenURI: await getURI(i,chainId)};
 				// cpMeta[i].id = i;
 				// cpMeta[i].owner = await getOwner(i);			//cpContract.ownerOf(i);
 				// cpMeta[i].tokenURI = await getURI(i);
@@ -198,13 +215,15 @@ async function printScoreboardData(gameData, address) {
 			
 			// internal variables for the trait analysis of hands based on metadata
 
+			console.log(parseRes);
+
 			let attr = parseRes.attributes;
 
 			let thisHandScore = 0;		// reset
 			let thisHand = "<h5>ID#:"+i;
 			let rowNum = 1;
 			let thisVal = "";
-			let osLivePrefix = "https://opensea.io/assets/matic";
+			let osLivePrefix = getOSLivePrefix(chainId);
 
 			let minScore = 11;		// if the score does not meet the minimum, then do not display in the top hands
 			// console.log("Dynamic minScore: Will show the hand if the score > average of all preceeding hands in active game.");
@@ -233,8 +252,11 @@ async function printScoreboardData(gameData, address) {
 
 
 
-			// console.log(attr);		// should not allow undefined to pass
-			if(attr){
+			console.log(attr, ownerOf, currentUserAddress);		// should not allow undefined to pass
+
+
+			// if(attr){
+				// this compilation added to outputData for table display of all Hands
 				thisHand = '<tr>\
 					<td>\
 					<a href="'+osLivePrefix+currentContract+"/"+i+'" target=_blank title="View NFT on OpenSea">'+i+'</a>\
@@ -269,7 +291,7 @@ async function printScoreboardData(gameData, address) {
 					// rowNum++;		// increment row header counter (Later dynamic by sort value?)
 				// }
 
-			}		// end if attr
+			// }		// end if attr
 
 			// TEST for completion of for loop
 			triggerEndOfLoop(i,cpCount, myHandsTable, myTotalScore, outputData);
@@ -281,7 +303,7 @@ async function printScoreboardData(gameData, address) {
 	let sumData = [pairs,twoPair,trips,quads,straights,flush,fullHouse,royal];
 
 	console.log(sumData);
-	scoreboardFinalOutput(gameData, cpCount, sumData);		// gamedata for db data, cpCount for gameTotal, 
+	scoreboardFinalOutput(chainId, cpCount, sumData);		// gamedata for db data, cpCount for gameTotal, 
 
 	console.log("RETROFIT THIS FUNCTION SUCH THAT IT GATHERS AS MUCH METADATA TO STORE AS POSSIBLE.");
 	// console.log(cpMeta);		// this should be the full object to write back to the API server here
@@ -305,7 +327,7 @@ async function printScoreboardData(gameData, address) {
 
 }
 
-export function ScoreContent({cu}) {
+export function ScoreContent({cu, cc}) {
 	const { address, connector, isConnected } = useAccount();
 
 	console.log(cu);
@@ -313,11 +335,11 @@ export function ScoreContent({cu}) {
 	useEffect(() => {
 		if(isConnected){
 			// console.log(isConnected);
-			printScoreboardData("", address);		// auto run for testing
+			printScoreboardData("", address, cc.chainId);		// auto run for testing
 		}
 	});
 
     return (<>
-	{cu ? <h3>Game Detail</h3> : <h3>Login Please</h3>}
+	{cu ? <h3 className="mainHeader">Game Detail</h3> : <h3>Login Please</h3>}
 	</>);
 }

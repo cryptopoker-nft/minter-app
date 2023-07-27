@@ -32,7 +32,7 @@ export function renderNav(page, setPage, cu, cc) {
           </>);
       case 'claim':
         return (<>
-            <Claim cu={cu} setPage={setPage} />
+            <Claim cu={cu} cc={cc} setPage={setPage} />
             <hr />
             <hr />
           </>);

@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { useAccount } from 'wagmi';
 
 // import functions for checkCount and getBalance
-import { MySendTransaction } from "../components/sendTest.jsx";		// tips
 import { PayCPT } from "../functions/wagmiConnect.jsx";				// 
 
 import exitVideo from "/img/mint/exitVideo.mp4";
@@ -26,9 +25,9 @@ export function MintContent({cu, cc}) {
 
     return (<>
 	{isConnected ? 
-		<div className="text-center">
+		<div id="mintContent" className="text-center">
 			{cu.handNum <= 4 ?
-				<PayCPT mintNum={cc.count} />
+				<PayCPT cc={cc} chainId={cc.chainId} mintNum={cc.count} />
 				:
 				<>
 					<h3>Visit the Dashboard to manage your hands before minting.</h3>
@@ -39,7 +38,6 @@ export function MintContent({cu, cc}) {
 			}
 			<hr />
 			<hr /> 
-			<MySendTransaction />
 		</div>
 		: 
 		<h3>Login Please</h3>}

@@ -2,7 +2,9 @@ import React, {useState} from "react";
 
 import { useAccount } from 'wagmi';
 
-export function UIArea({cu, setPage}) {
+import homeTag from '/img/home/art-tagline-cp.png';
+
+export function UIArea({cc, cu, setPage}) {
 
     const { address, connector, isConnected } = useAccount();
 
@@ -20,6 +22,13 @@ export function UIArea({cu, setPage}) {
         console.log("going mint", e.target);
         setPage("mint");
     }
+
+    function goDash(e){
+      e.preventDefault();
+      console.log("going dash", e.target);
+      setPage("dashboard");
+  }
+
     let cpImgUrl = 'https://cryptopoker.mypinata.cloud/ipfs/QmQuLYDgqWbPiNtYeGFR2ARtjCP9H9K4j6FBbAVwV8cYYm';
     let myTokens = 0;
 
@@ -29,31 +38,50 @@ export function UIArea({cu, setPage}) {
         // setTokens(cu.cpTokens);
         myTokens = cu.cpTokens;
       }
+
+      // console.log(cc);
     }
 
 
     return (<div id="UIArea">
+          
+      <h2>
+        <a href='#' onClick={(e) => goClaim(e)}>
+          <span className='badge token_balance'>
+            <span 
+              id="token-num"
+              style={{borderBottom:"2px solid " + (cc.chainId === 10 ? "red" : cc.chainId === 42161 ? "blue" : "purple")}}
+              >{myTokens}</span> <img id="cpt-logo" src={cpImgUrl} alt="CP Token Logo" />
+      </span></a></h2>
+
+      <img className='ui-tagline' src={homeTag} alt='Generative Collect & Trade NFT Game' />
+
       {cu.cpTokens < 1 ?
       <a 
+        id='claimBtn'
         className='btn btn-danger' 
         href='#'  
         onClick={(e) => goClaim(e)}
         >
         <strong>BUY IN</strong>
         </a>
+      : cu.handNum > 4 ?
+        <a
+          id='dashBtn' 
+          className='btn btn-success'
+          href='#' 
+          onClick={(e) => goDash(e)} 
+        >DASH</a>
       : <a 
         id='mintBtn' 
-        className='btn btn-outline-primary'
+        className='btn btn-primary'
         href='#' 
-        onClick={(e) => goMint(e)} ></a> }
-      {/* content (Label) of this button is set by CSS */}
+        onClick={(e) => goMint(e)} ></a> 
       
-    
-      <h2>
-        <a href='#' onClick={(e) => goClaim(e)}>
-          <span className='badge bg-secondary token_balance'>
-            <span id="token-num">{myTokens}</span> <img id="cpt-logo" src={cpImgUrl} alt="CP Token Logo" />
-      </span></a></h2>
+      }
+      {/* content (Label) of goMint button is set by CSS */}
+
+      
     
     </div>)
 

@@ -1,9 +1,58 @@
 /* index.css */
 
+
+
+/** general typography **/
+
+.colorBlack {
+    color: rgba(0,0,0,0.95);
+}
+
+.colorYellow {
+    color: #EEBD41;
+}
+
+.colorOrange {
+    color: #E57E3A;
+}
+
+.button-container .btn {
+    font-weight: 700;
+}
+
+
+/* UI */
+
+#UIArea {
+    display: flex;
+    justify-content: space-around;
+    align-items: baseline;
+}
+
+.ui-tagline {
+    max-width: 50%;
+}
+
+.badge {
+    padding: 0.1em 0.6em;
+    background-color: #E57E3A;
+    border: 5px solid #DB8747;
+}
+
+#cpt-logo {
+    height: 25px;
+    padding-left: 3px;
+}
+
+#claimBtn {
+    background-color: #EEBD41;
+    border: 3px solid #D6A738;
+    color:black;
+}
+
 /* homepage */
 .homeHero {
     max-width:100%;
-    border-radius:5px;
 }
 
 .title-head {
@@ -12,16 +61,97 @@
   
     text-align: center;
     position: relative;
-    top: -27px;
-    margin-bottom: -25px;
+    top: -5px;
+    margin-bottom: -5px;
+    max-width: 100%;
 
     font-size:3em;
     color: #fff;
+}
+
+.button-container-no-bg {
+    margin: 0 0px 10px 0px;
+    padding:  10px 20px;
+  
+    display: flex;
+    justify-content: space-around;
 }
   
 .title-head small {
     display: block;
 }
+
+.instructions-buttons {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 20px;
+
+    list-style: none;
+}
+
+/* Claim Page */
+.btn-claim {
+    background: #EBE9DD;
+    border: 3px solid #fff;
+    box-shadow: 5px 5px 3px 3px rgba(0,0,0,0.33);
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+#claimContent h3, .mainHeader {
+    font-size: 1.5em;
+    font-weight: 700;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    color: rgba(228, 132, 64, 0.95);
+}
+
+#claimContent ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+#claimContent ul li, .subHeader {
+    margin-bottom: 10px;
+    color: rgba(206, 183, 66, 0.95);
+
+    font-size: 1.2em;
+    font-weight: 600;
+}
+
+.subHeader {
+    text-transform: uppercase;
+}
+
+
+
+/** Mint page **/
+
+#mintContent .btn {
+    font-weight: 700;
+    border-width: 3px; 
+}
+
+.hotCutLink a {
+    color: rgba(228, 132, 64, 0.95);
+    font-size: 1.25em;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.btn-mint {
+    background-color: rgba(229, 127, 57, 1);
+    border: 3px solid rgba(228, 132, 64, 0.95);
+
+    color: black;
+
+    box-shadow: 5px 5px 3px 3px rgba(0,0,0,0.33);
+}
+
+
+
 
 .dash-header-buttons {
     display: flex;
@@ -32,9 +162,148 @@
     list-style: none;
 }
 
+#nft-img-two {
+    max-width: 100%;
+    margin: 0 auto;
+    display: block;
+}
+
 #nft-assess {
     color: white;
     font-size: 1.5rem;
     text-align: center;
     display: none;
 }
+
+#unlogged-adframe {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* dashboard */
+.nft-pen .small {
+    margin-top: 20px;
+}
+
+.nft-pen img {
+    border-radius: 5px;
+}
+
+#mintBtn {
+    margin-right:5px;
+    font-weight:700;
+}
+
+.cardCollection {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 195px;
+}
+
+.cardCollection .cardDisplay {
+    display: none;
+}
+
+.cardCollection .flip-card {
+    max-width: 33%;
+    height: 75px;
+}
+
+
+/* footer */
+#tipJar {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 20px;
+
+    color: rgba(206, 183, 66, 0.95);
+}
+
+#tipJar .rowLine {
+    flex-direction: row;
+    background: rgba(255,255,255,0.95);
+    border: #EBE9DD 3px solid;
+    border-radius: 10px;
+    padding: 3px;
+}
+
+
+
+
+/** over 600px will target tablet and above **/
+@media only screen and (min-width: 600px) {
+
+    .header-image img {
+        max-width: 90%; 
+        margin-left: 5%; 
+        margin-right: 5%; 
+      }
+
+    #main-column {
+        margin: 0 20px;
+    }
+
+    .homeHero {
+        max-width:100%;
+    }
+
+    .title-head {
+        max-width: 100%;
+    }
+
+    .button-container-no-bg {
+        margin: 0 0px 10px 0px;
+
+    }
+
+    /*dashboard */
+    .cardCollection .flip-card {
+        max-width: 25%;
+        height: 75px;
+    }
+
+    /* for shortcut on hand mint that will show NFT - position below mint */
+    .hotCutLink {
+      position: relative;
+      top: 150px;
+    }
+    
+    .hand {
+      height: 133px;
+      width: auto;
+    }
+  
+    .hand img {
+      max-width: 100px;
+    }
+  
+    .hand table td {
+      width: 20%;
+    }
+  
+    .hand.profile {
+      top: -190px;
+      margin-bottom: -210px;
+    }
+  
+    #myHandData table td, #sortTable table td {
+      font-size: 16px;
+    }
+  
+    /* Menu padding */
+    .nav-link {
+      padding: 0.25rem 0.75rem;
+    }
+  
+    .hand-container {
+      float: left;
+      margin-right: 2%;
+      width: 48%;
+    }
+  
+  }
