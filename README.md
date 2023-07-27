@@ -1,4 +1,2 @@
-# minter-app
-First Piece: NFT Hand Minter App for Cryptopoker Ecosystem
+# cryptopoker-web3
  cryptopoker nft trade and collect game
-
