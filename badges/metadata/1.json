@@ -1,0 +1,20 @@
+{
+  "name": "30-Day Mood Streak",
+  "description": "Checked in with your mood every day for 30 days.",
+  "image": "https://stoneale.com/badges/img/1.svg",
+  "external_url": "https://stoneale-bay.vercel.app",
+  "attributes": [
+    {
+      "trait_type": "badge_type",
+      "value": 1
+    },
+    {
+      "trait_type": "category",
+      "value": "mood"
+    },
+    {
+      "trait_type": "soulbound",
+      "value": true
+    }
+  ]
+}

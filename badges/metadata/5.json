@@ -1,0 +1,20 @@
+{
+  "name": "Kind Words",
+  "description": "Received 10 'helpful' reactions for supporting others in the community.",
+  "image": "https://stoneale.com/badges/img/5.svg",
+  "external_url": "https://stoneale-bay.vercel.app",
+  "attributes": [
+    {
+      "trait_type": "badge_type",
+      "value": 5
+    },
+    {
+      "trait_type": "category",
+      "value": "community"
+    },
+    {
+      "trait_type": "soulbound",
+      "value": true
+    }
+  ]
+}
