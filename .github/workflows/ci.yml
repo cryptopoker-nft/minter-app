@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "0 6 * * 1" # weekly: catch testnet resets / CLI changes
+
+jobs:
+  lint:
+    name: shellcheck · badge metadata
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: shellcheck
+        run: shellcheck scripts/*.sh
+      - name: Validate badge metadata
+        run: node scripts/validate-badges.mjs
+
+  deploy-testnet:
+    name: fresh testnet deploy + smoke test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Checkout stoneale-contracts
+        uses: actions/checkout@v4
+        with:
+          repository: stoneale-games/stoneale-contracts
+          path: stoneale-contracts
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32v1-none
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: stoneale-contracts
+
+      - name: Install Stellar CLI
+        run: |
+          curl -sSfL https://github.com/stellar/stellar-cli/releases/download/v28.1.0/stellar-cli-28.1.0-x86_64-unknown-linux-gnu.tar.gz \
+            | tar -xz -C /usr/local/bin stellar
+          stellar --version
+
+      - name: Build contracts
+        working-directory: stoneale-contracts
+        run: stellar contract build
+
+      - name: Deploy (throwaway admin)
+        env:
+          SOURCE: ci-admin
+          WASM_DIR: stoneale-contracts/target/wasm32v1-none/release
+          OUT: deployments/ci.json
+        run: scripts/deploy.sh
+
+      - name: Smoke test
+        env:
+          SOURCE: ci-admin
+        run: scripts/smoke-test.sh deployments/ci.json

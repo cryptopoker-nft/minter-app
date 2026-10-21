@@ -1,0 +1,20 @@
+{
+  "name": "First Breath",
+  "description": "Completed your first guided breathing session.",
+  "image": "https://stoneale.com/badges/img/2.svg",
+  "external_url": "https://stoneale-bay.vercel.app",
+  "attributes": [
+    {
+      "trait_type": "badge_type",
+      "value": 2
+    },
+    {
+      "trait_type": "category",
+      "value": "breathing"
+    },
+    {
+      "trait_type": "soulbound",
+      "value": true
+    }
+  ]
+}
