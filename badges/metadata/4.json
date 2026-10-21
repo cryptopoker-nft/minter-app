@@ -1,0 +1,20 @@
+{
+  "name": "Calm Week",
+  "description": "Played a calming game on 7 consecutive days.",
+  "image": "https://stoneale.com/badges/img/4.svg",
+  "external_url": "https://stoneale-bay.vercel.app",
+  "attributes": [
+    {
+      "trait_type": "badge_type",
+      "value": 4
+    },
+    {
+      "trait_type": "category",
+      "value": "consistency"
+    },
+    {
+      "trait_type": "soulbound",
+      "value": true
+    }
+  ]
+}
